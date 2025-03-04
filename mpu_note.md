@@ -90,9 +90,9 @@ cd ~/GLA_gerrit/MPU_P0/build/
 MACHINE=am62xx-evm bitbake -k tisdk-base-image
 --------------BNK--------------
 cd ~/Binoki/BNK_MPU/
-source setup-environment bld-map
+source setup-environment bld-bnk
 rm -rf bitbake-cookerdaemon.log cache/ tmp/
-bitbake map2-image-multimedia
+bitbake bnk-image-multimedia
 
 ```
 </details>
