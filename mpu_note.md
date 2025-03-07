@@ -757,6 +757,10 @@ setenv nfsroot /srv/rootfs
 setenv netargs 'setenv bootargs console=ttymxc1,115200 ${smp} root=/dev/nfs ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on nfsroot=${serverip}:${nfsroot},v3,tcp'
 run netboot
 
+-----------------------------------------------------------
+先將Image換成uImage
+sudo mkimage -A arm64 -O linux -T kernel -C none -a 0x40400000 -e 0x40400000 -n "Linux Kernel" -d Image uImage
+-----------------------------------------------------------
 方法4: rootfs+dtb for flo*
 setenv ipaddr 192.168.5.1 
 setenv serverip 192.168.5.100 
