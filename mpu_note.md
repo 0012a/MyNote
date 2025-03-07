@@ -166,6 +166,22 @@ MACHINE=am62xx-evm bitbake -k tisdk-base-image
   gpioget 0 9  
   gpiomon 0 9  
   要使用IO Expansion,PCA6416AHF  , 要看pca953x_gpio.c
+
+  root@imx8mpevk:~# gpioget -c 1 1
+"1"=inactive
+
+root@imx8mpevk:~# gpioget GFCI_ERROR_R
+"GFCI_ERROR_R"=inactive
+
+root@imx8mpevk:~# cat /sys/class/leds/NGFCI_SPR_IN_L/brightness
+0
+root@imx8mpevk:~# echo 1 > /sys/class/leds/NGFCI_SPR_IN_L/brightness
+root@imx8mpevk:~# echo 0 > /sys/class/leds/NGFCI_SPR_IN_L/brightness
+root@imx8mpevk:~# cat /sys/class/leds/NGFCI_SPR_IN_L/brightness
+0
+
+gpioset -c 4 14=1
+gpioinfo -c 1
 </details>
 
 <!-- I2C -->
@@ -740,6 +756,15 @@ setenv image Image; setenv fdt_file imx8mp-sbd-PreEVT.dtb
 setenv nfsroot /srv/rootfs
 setenv netargs 'setenv bootargs console=ttymxc1,115200 ${smp} root=/dev/nfs ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on nfsroot=${serverip}:${nfsroot},v3,tcp'
 run netboot
+
+方法4: rootfs+dtb for flo*
+setenv ipaddr 192.168.5.1 
+setenv serverip 192.168.5.100 
+setenv ip_dyn no
+setenv image uImage; setenv fdt_file imx8mp-sbd-PreEVT.dtb
+setenv bootargs console=ttymxc1,115200 earlycon root=/dev/nfs nfsroot=${serverip}:/srv/rootfs,nfsvers=3 rw debug ip=${ipaddr}::::root:eth0:on
+setenv bootcmd "tftpboot 0x40400000 ${image}; tftpboot 0x43000000 ${fdt_file}; bootm 0x40400000 - 0x43000000"
+run bootcmd
 
 ## pc端
 sudo tar -xvf imx-image-multimedia-imx8mpevk.rootfs.tar.zst -C /home/fanyu/fanyu/imx8-evk-dummy/rootfs/
