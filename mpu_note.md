@@ -143,6 +143,7 @@ MACHINE=am62xx-evm bitbake -k tisdk-base-image
 <details>
   <summary>GPIO</summary>
 
+```markdown
   > <yocto_build_dir>/tmp/work/imx8mpevk-poky-linux/u-boot-imx/<specified_git_folder>/git/arch/arm/dts/imx8mp-pinfunc.h
 
   > <yocto_build_dir>/tmp/work/imx8mpevk-poky-linux/u-boot-imx/<specified_git_folder>/git/arch/arm/dts/imx8mp-pinfunc.h
@@ -182,6 +183,8 @@ root@imx8mpevk:~# cat /sys/class/leds/NGFCI_SPR_IN_L/brightness
 
 gpioset -c 4 14=1
 gpioinfo -c 1
+
+```
 </details>
 
 <!-- I2C -->
@@ -926,6 +929,54 @@ make mrproper
 
 ```
 </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Fan -->
+<details>
+  <summary>Fan</summary>
+ 
+```markdown
+--------------flo--------------
+root@imx8mpevk:/# cat /sys/class/hwmon/hwmon*/name
+ads7830
+ads7830
+cpu_thermal
+soc_thermal
+lm96163
+
+root@imx8mpevk:/# echo 128 > /sys/class/hwmon/hwmon4/pwm1
+[ 4090.785327] client->addr=76,command=76,data.byte =23
+root@imx8mpevk:/# echo 0 > /sys/class/hwmon/hwmon4/pwm1
+[ 4022.315438] client->addr=76,command=76,data.byte =0
+
+```
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## md-and-html範例
