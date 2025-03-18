@@ -78,6 +78,7 @@ repo sync
 gitdir=$(git rev-parse --git-dir); scp -p -P 29418 fanyu.fy.chen@wmpsrv3.empgmdi.com:hooks/commit-msg ${gitdir}/hooks/
 git commit --amend
 git checkout remotes/origin/IMX8_LINUX_BSP_2.2.0_YOCTO
+git push origin HEAD:refs/for/IMX8_LINUX_BSP_2.2.0_YOCTO
 --------------MAP2--------------
 下載
 $ repo init -u ssh://wmpsrv3.empgmdi.com:29418/manifest.git -b NXP/IMX8 -m IMX_LINUX_BSP_6.6.36_YOCTO_MAP.xml --repo-url=ssh://wmpsrv3.empgmdi.com:29418/git-repo.git --config-name
