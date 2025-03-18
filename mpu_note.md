@@ -8,7 +8,7 @@
 
 ---
 
-## MPU安裝環境123rrrrr
+## MPU安裝環境
   <details>
     <summary>TI</summary>
 
@@ -18,7 +18,42 @@
 
   https://plausible-tangerine-5fd.notion.site/Ti-Yocto-Building-GLA-a783ad490998465f8262bd7cc3b1ffaf
 
-  
+  DFU網址  http://192.168.3.173:3000/fDHYPQWIRzWdWJes5lmmMA?view
+
+  SD卡燒錄EMMC  http://192.168.3.173:3000/b570FV6gRUa6x-E8eTKf0Q
+
+```markdown
+查看現在的磁區
+---
+root@am62xx-evm:~# lsblk
+NAME         MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+mmcblk0      179:0    0 14.7G  0 disk
+mmcblk0boot0 179:32   0    4M  1 disk
+mmcblk0boot1 179:64   0    4M  1 disk
+mmcblk1      179:96   0  7.4G  0 disk
+|-mmcblk1p1  179:97   0  128M  0 part /run/media/boot-mmcblk1p1
+`-mmcblk1p2  179:98   0  7.3G  0 part /
+mmcblk0是EMMC
+mmcblk1是SD卡
+有根目錄/是開機的地點
+
+MMC開機
+---
+=> printenv mmcdev
+mmcdev=0
+=> printenv bootpart
+bootpart=0
+
+SD卡開機
+---
+=> printenv mmcdev
+mmcdev=1
+=> printenv bootpart
+bootpart=1:2
+1代表SD卡
+2代表磁區
+
+```
   </details>
 
 ## MPU clone與build與ota
@@ -733,14 +768,17 @@ run mmcargs
 run loadimage
 booti ${loadaddr} - ${fdt_addr_r}
 
-方法1: rootfs
+方法1: rootfs(不使用)
+-----------------------------------------------------------
 setenv bootargs console=ttymxc1,115200 earlycon root=/dev/nfs \
 nfsroot=192.168.5.100:/srv/rootfs,nfsvers=3 rw debug \
 ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on
 setenv bootcmd "run loadfdt;run loadimage; booti ${loadaddr} - ${fdt_addr}"
+_________________
 
 方法2: rootfs+dtb
-setenv ipaddr 192.168.5.1 
+-----------------------------------------------------------
+setenv ipaddr 192.168.5.1
 setenv serverip 192.168.5.100 
 setenv ip_dyn no
 setenv image Image; setenv fdt_file imx8mp-sbd-PreEVT.dtb
@@ -749,9 +787,11 @@ nfsroot=192.168.5.100:/srv/rootfs,nfsvers=3 rw debug \
 ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on \
 vt.global_cursor_default=0
 setenv bootcmd "tftpboot ${loadaddr} ${image}; tftpboot ${fdt_addr} ${fdt_file}; booti ${loadaddr} - ${fdt_addr}"
-saveenv
+run bootcmd
+_________________
 
-方法3: rootfs+dtb
+方法3: rootfs+dtb ,需要建立boot資料夾,把dtb放進boot裡(不使用)
+-----------------------------------------------------------
 setenv ipaddr 192.168.5.1 
 setenv serverip 192.168.5.100 
 setenv ip_dyn no
@@ -759,12 +799,13 @@ setenv image Image; setenv fdt_file imx8mp-sbd-PreEVT.dtb
 setenv nfsroot /srv/rootfs
 setenv netargs 'setenv bootargs console=ttymxc1,115200 ${smp} root=/dev/nfs ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on nfsroot=${serverip}:${nfsroot},v3,tcp'
 run netboot
+_________________
+可以選擇要不要存檔
+saveenv
 
+專門用在flo的舊版本uboot,需要uimage
 -----------------------------------------------------------
-先將Image換成uImage
-sudo mkimage -A arm64 -O linux -T kernel -C none -a 0x40400000 -e 0x40400000 -n "Linux Kernel" -d Image uImage
------------------------------------------------------------
-方法4: rootfs+dtb for flo*
+方法4: rootfs+dtb 專門用在flo的舊版本uboot,需要uimage
 setenv ipaddr 192.168.5.1 
 setenv serverip 192.168.5.100 
 setenv ip_dyn no
@@ -772,6 +813,12 @@ setenv image uImage; setenv fdt_file imx8mp-sbd-PreEVT.dtb
 setenv bootargs console=ttymxc1,115200 earlycon root=/dev/nfs nfsroot=${serverip}:/srv/rootfs,nfsvers=3 rw debug ip=${ipaddr}::::root:eth0:on
 setenv bootcmd "tftpboot 0x40400000 ${image}; tftpboot 0x43000000 ${fdt_file}; bootm 0x40400000 - 0x43000000"
 run bootcmd
+
+
+需要先將Image換成uImage
+sudo mkimage -A arm64 -O linux -T kernel -C none -a 0x40400000 -e 0x40400000 -n "Linux Kernel" -d Image uImage
+
+-----------------------------------------------------------
 
 ## pc端
 sudo tar -xvf imx-image-multimedia-imx8mpevk.rootfs.tar.zst -C /home/fanyu/fanyu/imx8-evk-dummy/rootfs/
