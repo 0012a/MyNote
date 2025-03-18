@@ -99,6 +99,45 @@ dfu 0 mmc 0
 mmc partconf 0 1 1 1
 mmc bootbus 0 2 0 0
 
+device-tree path
+---
+
+[可以用此指令查對應的link]
+find -type l -exec ls -l {} + | grep "ti-linux-6.1.y"
+find -type l -exec ls -l {} + | grep "ti-u-boot-2023.04"
+
+[linux_kernel]
+/home/fanyu/GLA/MPU_P0/modify/sources/ti-linux-6.1.y/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+[linux_kernel原始路徑]
+/home/fanyu/GLA/MPU_P0/build/arago-tmp-default-glibc/work-shared/am62xx-evm/kernel-source -> /home/fanyu/GLA/MPU_P0/sources/meta-ti/meta-ti-bsp/modify/sources/ti-linux-6.1.y
+
+[uboot]
+/home/fanyu/GLA/MPU_P0/modify/sources/ti-u-boot-2023.04/arch/arm/dts/k3-am625-sk.dts
+[uboot原始路徑]
+/home/fanyu/GLA/MPU_P0/build/arago-tmp-default-baremetal-k3r5/work/am62xx_evm_k3r5-oe-eabi/u-boot-ti-staging/1_2023.04+git999-r0_tisdk_1_edgeai_2/u-boot-ti-staging-2023.04+git999/source
+
+single build
+---
+[單一build linux]
+MACHINE=am62xx-evm bitbake linux-ti-staging
+
+[單一build u-boot]
+MACHINE=am62xx-evm bitbake u-boot-ti-staging
+
+[進入 Linux kernel menuconfig]
+MACHINE=am62xx-evm bitbake linux-ti-staging -c menuconfig
+
+[進入 u-boot menuconfig]
+MACHINE=am62xx-evm bitbake u-boot-ti-staging -c menuconfig
+
+[只編譯 Linux kernel]
+MACHINE=am62xx-evm bitbake linux-ti-staging -c compile -f
+
+[只編譯 u-boot]
+MACHINE=am62xx-evm bitbake u-boot-ti-staging -c compile -f
+
+
+
 ```
   </details>
 
@@ -1025,18 +1064,6 @@ make mrproper
 </details>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- Fan -->
 <details>
   <summary>Fan</summary>
@@ -1059,6 +1086,29 @@ root@imx8mpevk:/# echo 0 > /sys/class/hwmon/hwmon4/pwm1
 </details>
 
 
+
+<!-- device-tree -->
+<details>
+  <summary>device-tree</summary>
+ 
+```markdown
+--------------MAP--------------
+[可以用此指令查對應的link]
+find -type l -exec ls -l {} + | grep "/home/fanyu/fanyu/EVSE/EVSE_AC_new/modify/sources/u-boot-imx"
+
+[uboot原始路徑]
+home/fanyu/fanyu/EVSE/EVSE_AC_new/build-8mp/tmp/work/imx8mp_lpddr4_evk-poky-linux/u-boot-imx/2022.04-r0/u-boot-imx-2022.04/imx8mp_evk_defconfig/source
+對應到
+/home/fanyu/fanyu/EVSE/EVSE_AC_new/modify/sources/u-boot-imx
+
+[kernel原始路徑]
+/home/fanyu/fanyu/EVSE/EVSE_AC_new/build-8mp/tmp/work-shared/imx8mp-lpddr4-evk/kernel-source
+對應到
+/home/fanyu/fanyu/EVSE/EVSE_AC_new/modify/sources/linux-imx
+
+
+```
+</details>
 
 
 
