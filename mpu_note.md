@@ -53,6 +53,52 @@ bootpart=1:2
 1代表SD卡
 2代表磁區
 
+
+DFU燒錄
+---
+要先準備
+rootfs.ext4
+
+dd if=/dev/zero of=tisdk-base.ext4 bs=1M count=1200
+mkfs.ext4 -F tisdk-base.ext4
+mkdir mnt_fs
+sudo mount -t ext4 tisdk-base.ext4 mnt_fs
+cd mnt_fs
+sudo tar xvf ../tisdk-base-image-am62xx-evm.tar.xz
+
+[USB端]查看是否有bootloader字串
+.\dfu-util.exe -l
+
+這三個檔案是Kazi給的,TI原生檔案
+.\dfu-util.exe -R -a 0 -D usb_tiboot3.bin
+.\dfu-util.exe -R -a 0 -D usb_tispl.bin
+.\dfu-util.exe -R -a 1 -D usb_u-boot.img
+
+[Uart端]
+要馬上回到這個視窗,在倒數3秒前卡在uboot
+
+setenv uuid_gpt_disk 8f8c2a63-82d2-4693-95e2-fb4d6479aad2
+setenv uuid_gpt_rootfs e14aea3b-1f60-447e-b0df-37a749a387e9
+setenv uuid_gpt_data 12345678-1234-1234-1234-123456789abc
+setenv partitions "uuid_disk=\${uuid_gpt_disk};name=mmcblk0p1,start=1MiB,size=3GiB,uuid=\${uuid_gpt_rootfs};name=mmcblk0p2,start=3GiB,size=3GiB,uuid=${uuid_gpt_data};name=mmcblk0p3,start=6GiB,size=3GiB"
+gpt write mmc 0 ${partitions}
+mmc part
+
+設定 the dfu environment variables
+setenv dfu_alt_info ${dfu_alt_info_emmc}
+輸入Input to load emmc commands from PC
+dfu 0 mmc 0
+
+[USB端]
+.\dfu-util.exe -a tiboot3.bin.raw -D tiboot3.bin --device ,0451:*
+.\dfu-util.exe -a tispl.bin.raw -D tispl.bin --device ,0451:*
+.\dfu-util.exe -a u-boot.img.raw -D u-boot.img --device ,0451:*
+.\dfu-util.exe -R -a rootfs -D tisdk-base.ext4 --device ,0451:*
+
+[Uart端]
+mmc partconf 0 1 1 1
+mmc bootbus 0 2 0 0
+
 ```
   </details>
 
