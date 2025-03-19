@@ -305,6 +305,14 @@ root@imx8mpevk:~# cat /sys/class/leds/NGFCI_SPR_IN_L/brightness
 gpioset -c 4 14=1
 gpioinfo -c 1
 
+C語言
+---
+#include <linux/gpio.h>
+int FAN_PWR_EN=45;/gpio0 32pin+13
+gpio_requst(FAN_PWR_EN,"FAN_PWR,EN");
+gpio_set_value(FAN_PWR_EN,1);
+gpio_set_value(FAN_PWR_EN,0);
+
 ```
 </details>
 
