@@ -196,24 +196,34 @@ git push origin HEAD:refs/for/IMX_LINUX_BSP_6.6.36_YOCTO_BNK
   <summary>build</summary>
  
 ```markdown
---------------flo--------------
+<!-- --------------flo-------------- -->
 source setup-environment bld-sbd
 bitbake imx-image-multimedia
---------------MAP--------------
+<!-- --------------MAP-------------- -->
 source setup-environment build-8mp
 bitbake imx-image-multimedia
---------------MAP2--------------
+<!-- --------------MAP2-------------- -->
 source setup-environment bld-map
 bitbake map2-image-multimedia
---------------GLA--------------
+<!-- --------------GLA-------------- -->
 cd ~/GLA_gerrit/MPU_P0/build/
 . conf/setenv
 MACHINE=am62xx-evm bitbake -k tisdk-base-image
---------------BNK--------------
+<!-- --------------BNK-------------- -->
 cd ~/Binoki/BNK_MPU/
 source setup-environment bld-bnk
 rm -rf bitbake-cookerdaemon.log cache/ tmp/
 bitbake bnk-image-multimedia
+
+
+<!-- [單一build linux] -->
+bitbake -c cleanall linux-imx
+bitbake linux-imx
+
+<!-- [單一build u-boot] -->
+bitbake -c cleanall u-boot-imx
+bitbake u-boot-imx
+
 
 ```
 </details>
