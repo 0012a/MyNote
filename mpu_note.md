@@ -858,7 +858,7 @@ mmc erase 0 0x2000
 
 <!-- nfs command -->
 <details>
-  <summary>nfs command</summary>
+  <summary>nfs command(EVT)</summary>
  
 ```markdown
 --------------SBD--------------
@@ -885,7 +885,7 @@ _________________
 setenv ipaddr 192.168.5.1
 setenv serverip 192.168.5.100 
 setenv ip_dyn no
-setenv image Image; setenv fdt_file imx8mp-sbd-PreEVT.dtb
+setenv image Image; setenv fdt_file imx8mp-sbd-EVT.dtb
 setenv bootargs console=ttymxc1,115200 earlycon root=/dev/nfs \
 nfsroot=192.168.5.100:/srv/rootfs,nfsvers=3 rw debug \
 ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on \
@@ -899,7 +899,7 @@ _________________
 setenv ipaddr 192.168.5.1 
 setenv serverip 192.168.5.100 
 setenv ip_dyn no
-setenv image Image; setenv fdt_file imx8mp-sbd-PreEVT.dtb
+setenv image Image; setenv fdt_file imx8mp-sbd-EVT.dtb
 setenv nfsroot /srv/rootfs
 setenv netargs 'setenv bootargs console=ttymxc1,115200 ${smp} root=/dev/nfs ip=192.168.5.1::192.168.5.254:255.255.255.0:root:eth0:on nfsroot=${serverip}:${nfsroot},v3,tcp'
 run netboot
@@ -913,7 +913,7 @@ saveenv
 setenv ipaddr 192.168.5.1 
 setenv serverip 192.168.5.100 
 setenv ip_dyn no
-setenv image uImage; setenv fdt_file imx8mp-sbd-PreEVT.dtb
+setenv image uImage; setenv fdt_file imx8mp-sbd-EVT.dtb
 setenv bootargs console=ttymxc1,115200 earlycon root=/dev/nfs nfsroot=${serverip}:/srv/rootfs,nfsvers=3 rw debug ip=${ipaddr}::::root:eth0:on
 setenv bootcmd "tftpboot 0x40400000 ${image}; tftpboot 0x43000000 ${fdt_file}; bootm 0x40400000 - 0x43000000"
 run bootcmd
