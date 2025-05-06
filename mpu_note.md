@@ -1129,10 +1129,34 @@ home/fanyu/fanyu/EVSE/EVSE_AC_new/build-8mp/tmp/work/imx8mp_lpddr4_evk-poky-linu
 </details>
 
 
+<!-- POS機 -->
+<details>
+  <summary>pos機</summary>
+ 
+```markdown
 
+[插卡式]
+busctl --user call evse.base / card.reader request 's' 'credit'
+/opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 poll &
+/opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 set
+/opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 NPI
+/opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 time
+/opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 pay
+/opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 read
+killall /opt/POS_SCH001/POS_SCH001_CONFIG
 
+[感應式]
+busctl --user call evse.base / card.reader request 's' 'rfid'
+/opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 poll &
+/opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 set
+/opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 NPI
+/opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 pay
+/opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 applepay
+/opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 read
+killall /opt/POS_UIC680/POS_UIC680_CONFIG
 
-
+```
+</details>
 
 
 
