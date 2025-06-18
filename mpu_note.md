@@ -1145,9 +1145,9 @@ busctl --user call evse.base / card.reader request 's' 'credit'
 /opt/POS_SCH001/POS_SCH001_CONFIG /dev/ttymxc3 read
 killall /opt/POS_SCH001/POS_SCH001_CONFIG
 
-busctl --user call evse.pos / credit.reader card_id
-busctl --user call evse.pos / credit.reader status
-busctl --user call evse.pos / credit.reader start 'b' true
+busctl --user call evse.pos.credit / credit.reader card_id
+busctl --user call evse.pos.credit / credit.reader status
+busctl --user call evse.pos.credit / credit.reader start 'b' true
 busctl --user emit / card.reader credit 'b' 1
 
 [感應式]
@@ -1160,9 +1160,9 @@ busctl --user call evse.base / card.reader request 's' 'rfid'
 /opt/POS_UIC680/POS_UIC680_CONFIG /dev/ttymxc0 read
 killall /opt/POS_UIC680/POS_UIC680_CONFIG
 
-busctl --user call evse.pos / rfid.reader card_id
-busctl --user call evse.pos / rfid.reader status
-busctl --user call evse.pos / rfid.reader start 'b' true
+busctl --user call evse.pos.rfid / rfid.reader card_id
+busctl --user call evse.pos.rfid / rfid.reader status
+busctl --user call evse.pos.rfid / rfid.reader start 'b' true
 busctl --user emit / card.reader rfid 'b' 1
 
 ```
