@@ -182,9 +182,13 @@ git switch MPU_P0
 git pull ssh://wmpsrv3.empgmdi.com:29418/TI/AM623/GLA/MPU_P0
 --------------BNK--------------
 下載
+(gitLAB)
+https://devops.foxconn.com/25247/map-bnk-yocto
+以下是舊的
 repo init -u ssh://wmpsrv3.empgmdi.com:29418/manifest.git -b NXP/IMX8 -m IMX_LINUX_BSP_6.6.36_YOCTO_BNK.xml \--repo-url=ssh://wmpsrv3.empgmdi.com:29418/git-repo.git --config-name
 repo sync
 上傳
+以下是舊的
 gitdir=$(git rev-parse --git-dir); scp -p -P 29418 fanyu.fy.che@wmpsrv3.empgmdi.com:hooks/commit-msg ${gitdir}/hooks/
 git commit --amend
 git push origin HEAD:refs/for/IMX_LINUX_BSP_6.6.36_YOCTO_BNK
